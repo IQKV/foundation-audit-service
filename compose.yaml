@@ -1,0 +1,51 @@
+services:
+  # PostgreSQL Database for Audit Service
+  postgres-auditservice:
+    extends:
+      file: compose.base.yaml
+      service: postgres-auditservice
+
+  # RabbitMQ for Audit Service
+  rabbitmq-auditservice:
+    extends:
+      file: compose.base.yaml
+      service: rabbitmq-auditservice
+
+  # MailHog for local email testing
+  mailhog:
+    extends:
+      file: compose.base.yaml
+      service: mailhog
+
+  # SonarQube for code quality analysis
+  sonar:
+    extends:
+      file: compose.base.yaml
+      service: sonar
+
+  # Prometheus for metrics collection
+  prometheus:
+    extends:
+      file: compose.base.yaml
+      service: prometheus
+
+  # Grafana for metrics visualization
+  grafana:
+    extends:
+      file: compose.base.yaml
+      service: grafana
+
+networks:
+  auditservice-network:
+    name: foundation-auditservice-network-dev
+    external: false
+
+volumes:
+  postgres_auditservice_data:
+    name: iqkv_auditservice_postgres_data_dev
+  rabbitmq_auditservice_data:
+    name: iqkv_auditservice_rabbitmq_data_dev
+  auditservice_logs:
+    name: auditservice_logs_dev
+  auditservice_tmp:
+    name: auditservice_tmp_dev
