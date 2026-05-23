@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iqkv.foundation.auditservice.infrastructure.persistence.AuditMapper">
+
+    <resultMap id="AuditRecordResultMap" type="com.iqkv.foundation.auditservice.audit.domain.AuditRecord">
+        <id property="id" column="id"/>
+        <result property="action" column="action"/>
+        <result property="entityType" column="entity_type"/>
+        <result property="entityId" column="entity_id"/>
+        <result property="actorId" column="actor_id"/>
+        <result property="actorType" column="actor_type"/>
+        <result property="actorEmail" column="actor_email"/>
+        <result property="actorIp" column="actor_ip"/>
+        <result property="actorUa" column="actor_ua"/>
+        <result property="impersonatorId" column="impersonator_id"/>
+        <result property="tenantKey" column="tenant_key"/>
+        <result property="severity" column="severity"/>
+        <result property="details" column="details" typeHandler="com.iqkv.foundation.auditservice.infrastructure.persistence.JsonbTypeHandler"/>
+        <result property="occurredAt" column="occurred_at"/>
+        <result property="correlationId" column="correlation_id"/>
+    </resultMap>
+
+    <insert id="insert">
+        INSERT INTO audit_logs (
+            id, action, entity_type, entity_id,
+            actor_id, actor_type, actor_email, actor_ip, actor_ua,
+            impersonator_id, tenant_key, severity, details,
+            occurred_at, correlation_id
+        ) VALUES (
+            #{id}, #{action}, #{entityType}, #{entityId},
+            #{actorId}, #{actorType}, #{actorEmail}, #{actorIp}, #{actorUa},
+            #{impersonatorId}, #{tenantKey}, #{severity}, #{details, typeHandler=com.iqkv.foundation.auditservice.infrastructure.persistence.JsonbTypeHandler},
+            #{occurredAt}, #{correlationId}
+        )
+    </insert>
+
+    <select id="findById" resultMap="AuditRecordResultMap">
+        SELECT * FROM audit_logs WHERE id = #{id}
+    </select>
+
+    <select id="findAll" resultMap="AuditRecordResultMap">
+        SELECT * FROM audit_logs
+        <where>
+            <if test="tenantKey != null">
+                tenant_key = #{tenantKey}
+            </if>
+        </where>
+        ORDER BY occurred_at DESC
+        OFFSET #{offset} LIMIT #{limit}
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT count(*) FROM audit_logs
+        <where>
+            <if test="tenantKey != null">
+                tenant_key = #{tenantKey}
+            </if>
+        </where>
+    </select>
+
+</mapper>
