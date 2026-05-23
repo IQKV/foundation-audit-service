@@ -22,13 +22,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
 import org.apache.ibatis.type.MappedTypes;
 import org.postgresql.util.PGobject;
-import tools.jackson.core.JsonProcessingException;
-import tools.jackson.databind.json.JsonMapper;
 
 /**
  * MyBatis TypeHandler for PostgreSQL JSONB fields.
