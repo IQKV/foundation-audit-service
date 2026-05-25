@@ -22,8 +22,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.json.JsonMapper;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
@@ -52,7 +52,7 @@ public class JsonbTypeHandler extends BaseTypeHandler<Map<String, Object>> {
     jsonObject.setType("jsonb");
     try {
       jsonObject.setValue(jsonMapper.writeValueAsString(parameter));
-    } catch (final JsonProcessingException e) {
+    } catch (final JacksonException e) {
       throw new SQLException("Error mapping Map to JSONB", e);
     }
     ps.setObject(i, jsonObject);
@@ -83,7 +83,7 @@ public class JsonbTypeHandler extends BaseTypeHandler<Map<String, Object>> {
     }
     try {
       return jsonMapper.readValue(json, Map.class);
-    } catch (final JsonProcessingException e) {
+    } catch (final JacksonException e) {
       throw new SQLException("Error mapping JSONB to Map", e);
     }
   }
