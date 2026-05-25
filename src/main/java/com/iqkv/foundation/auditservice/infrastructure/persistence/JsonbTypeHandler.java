@@ -40,6 +40,10 @@ public class JsonbTypeHandler extends BaseTypeHandler<Map<String, Object>> {
 
   private final JsonMapper jsonMapper;
 
+  public JsonbTypeHandler() {
+    this(new JsonMapper());
+  }
+
   public JsonbTypeHandler(final JsonMapper jsonMapper) {
     this.jsonMapper = jsonMapper;
   }
