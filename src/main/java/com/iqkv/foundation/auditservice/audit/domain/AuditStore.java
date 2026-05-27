@@ -16,9 +16,11 @@
 
 package com.iqkv.foundation.auditservice.audit.domain;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.iqkv.foundation.auditservice.audit.application.dto.AuditActionCount;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -50,4 +52,12 @@ public interface AuditStore {
    * @return page of records
    */
   Page<AuditRecord> findAllByTenantKey(String tenantKey, Pageable pageable);
+
+  /**
+   * Counts records grouped by action.
+   *
+   * @param tenantKey optional tenant filter
+   * @return list of action counts
+   */
+  List<AuditActionCount> countByAction(String tenantKey);
 }

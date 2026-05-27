@@ -16,11 +16,13 @@
 
 package com.iqkv.foundation.auditservice.audit.application;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import com.iqkv.foundation.audit.model.event.AuditEvent;
 import com.iqkv.foundation.audit.spi.AuditLogService;
+import com.iqkv.foundation.auditservice.audit.application.dto.AuditActionCount;
 import com.iqkv.foundation.auditservice.audit.domain.AuditRecord;
 import com.iqkv.foundation.auditservice.audit.domain.AuditStore;
 import org.slf4j.Logger;
@@ -31,8 +33,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Orchestrates audit log operations.
- * Implements the SPI for logging and provides search capabilities for the Admin API.
+ * Orchestrator for audit log operations.
  */
 @Service
 public class AuditLogOrchestrator implements AuditLogService {
@@ -79,5 +80,10 @@ public class AuditLogOrchestrator implements AuditLogService {
   @Transactional(readOnly = true)
   public Page<AuditRecord> searchRecords(final String tenantKey, final Pageable pageable) {
     return auditStore.findAllByTenantKey(tenantKey, pageable);
+  }
+
+  @Transactional(readOnly = true)
+  public List<AuditActionCount> getCountsByAction(final String tenantKey) {
+    return auditStore.countByAction(tenantKey);
   }
 }

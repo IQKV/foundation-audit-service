@@ -45,7 +45,19 @@
                 tenant_key = #{tenantKey}
             </if>
         </where>
-        ORDER BY occurred_at DESC
+        ORDER BY
+        <choose>
+            <when test="sortBy == 'occurredAt' or sortBy == 'occurred_at'">occurred_at</when>
+            <when test="sortBy == 'action'">action</when>
+            <when test="sortBy == 'entityType' or sortBy == 'entity_type'">entity_type</when>
+            <when test="sortBy == 'tenantKey' or sortBy == 'tenant_key'">tenant_key</when>
+            <when test="sortBy == 'severity'">severity</when>
+            <otherwise>occurred_at</otherwise>
+        </choose>
+        <choose>
+            <when test="sortDir == 'asc' or sortDir == 'ASC'">ASC</when>
+            <otherwise>DESC</otherwise>
+        </choose>
         OFFSET #{offset} LIMIT #{limit}
     </select>
 
@@ -56,6 +68,18 @@
                 tenant_key = #{tenantKey}
             </if>
         </where>
+    </select>
+
+    <select id="countByAction" resultType="com.iqkv.foundation.auditservice.audit.application.dto.AuditActionCount">
+        SELECT action, count(*) as count
+        FROM audit_logs
+        <where>
+            <if test="tenantKey != null">
+                tenant_key = #{tenantKey}
+            </if>
+        </where>
+        GROUP BY action
+        ORDER BY count DESC
     </select>
 
 </mapper>

@@ -16,9 +16,11 @@
 
 package com.iqkv.foundation.auditservice.infrastructure.persistence;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.iqkv.foundation.auditservice.audit.application.dto.AuditActionCount;
 import com.iqkv.foundation.auditservice.audit.domain.AuditRecord;
 import com.iqkv.foundation.auditservice.audit.domain.AuditStore;
 import org.springframework.data.domain.Page;
@@ -50,8 +52,22 @@ public class MyBatisAuditStore implements AuditStore {
 
   @Override
   public Page<AuditRecord> findAllByTenantKey(final String tenantKey, final Pageable pageable) {
-    final var records = auditMapper.findAll(tenantKey, pageable.getOffset(), pageable.getPageSize());
+    String sortBy = "occurred_at";
+    String sortDir = "DESC";
+
+    if (pageable.getSort().isSorted()) {
+      final var order = pageable.getSort().iterator().next();
+      sortBy = order.getProperty();
+      sortDir = order.getDirection().name();
+    }
+
+    final var records = auditMapper.findAll(tenantKey, sortBy, sortDir, pageable.getOffset(), pageable.getPageSize());
     final var total = auditMapper.count(tenantKey);
     return new PageImpl<>(records, pageable, total);
+  }
+
+  @Override
+  public List<AuditActionCount> countByAction(final String tenantKey) {
+    return auditMapper.countByAction(tenantKey);
   }
 }

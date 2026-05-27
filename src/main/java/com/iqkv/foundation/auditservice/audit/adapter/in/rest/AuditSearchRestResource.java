@@ -16,9 +16,11 @@
 
 package com.iqkv.foundation.auditservice.audit.adapter.in.rest;
 
+import java.util.List;
 import java.util.UUID;
 
 import com.iqkv.foundation.auditservice.audit.application.AuditLogOrchestrator;
+import com.iqkv.foundation.auditservice.audit.application.dto.AuditActionCount;
 import com.iqkv.foundation.auditservice.audit.domain.AuditRecord;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -56,6 +58,15 @@ public class AuditSearchRestResource {
       @RequestParam(required = false) final String tenantKey,
       final Pageable pageable) {
     return ResponseEntity.ok(orchestrator.searchRecords(tenantKey, pageable));
+  }
+
+  @GetMapping("/stats/actions")
+  @PreAuthorize("hasAuthority('PLATFORM_ADMIN')")
+  @Operation(summary = "Get audit record counts by action", description = "Returns counts of audit records grouped by their action type.")
+  public ResponseEntity<List<AuditActionCount>> getActionStats(
+      @Parameter(description = "Optional tenant key filter")
+      @RequestParam(required = false) final String tenantKey) {
+    return ResponseEntity.ok(orchestrator.getCountsByAction(tenantKey));
   }
 
   @GetMapping("/{id}")
