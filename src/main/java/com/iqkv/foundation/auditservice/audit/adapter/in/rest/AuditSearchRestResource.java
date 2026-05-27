@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Restricted to PLATFORM_ADMIN authority.
  */
 @RestController
-@RequestMapping("/api/v1/audits")
+@RequestMapping("/api/v1/audit/admin/logs")
 @Tag(name = "Audit Logs", description = "Administrative API for reviewing platform-wide activity logs")
 public class AuditSearchRestResource {
 
