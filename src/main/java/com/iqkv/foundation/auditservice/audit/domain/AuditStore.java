@@ -48,10 +48,11 @@ public interface AuditStore {
    * Finds records with pagination and filtering.
    *
    * @param tenantKey optional tenant filter
+   * @param action    optional action filter (e.g., "auth.signin.attempt")
    * @param pageable  pagination info
    * @return page of records
    */
-  Page<AuditRecord> findAllByTenantKey(String tenantKey, Pageable pageable);
+  Page<AuditRecord> findAllByTenantKey(String tenantKey, String action, Pageable pageable);
 
   /**
    * Counts records grouped by action.

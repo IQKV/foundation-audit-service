@@ -52,12 +52,14 @@ public class AuditSearchRestResource {
 
   @GetMapping
   @PreAuthorize("hasAuthority('PLATFORM_ADMIN')")
-  @Operation(summary = "Search audit logs", description = "Returns a paginated list of audit records, optionally filtered by tenant.")
+  @Operation(summary = "Search audit logs", description = "Returns a paginated list of audit records, optionally filtered by tenant and action type.")
   public ResponseEntity<Page<AuditRecord>> search(
       @Parameter(description = "Optional tenant key filter")
       @RequestParam(required = false) final String tenantKey,
+      @Parameter(description = "Optional action filter (e.g., 'auth.signin.attempt' for signin attempts)")
+      @RequestParam(required = false) final String action,
       final Pageable pageable) {
-    return ResponseEntity.ok(orchestrator.searchRecords(tenantKey, pageable));
+    return ResponseEntity.ok(orchestrator.searchRecords(tenantKey, action, pageable));
   }
 
   @GetMapping("/stats/actions")

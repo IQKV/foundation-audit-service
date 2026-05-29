@@ -36,12 +36,13 @@ public interface AuditMapper {
   Optional<AuditRecord> findById(UUID id);
 
   List<AuditRecord> findAll(@Param("tenantKey") String tenantKey,
+                            @Param("action") String action,
                             @Param("sortBy") String sortBy,
                             @Param("sortDir") String sortDir,
                             @Param("offset") long offset,
                             @Param("limit") int limit);
 
-  long count(@Param("tenantKey") String tenantKey);
+  long count(@Param("tenantKey") String tenantKey, @Param("action") String action);
 
   List<AuditActionCount> countByAction(@Param("tenantKey") String tenantKey);
 }

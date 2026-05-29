@@ -44,6 +44,9 @@
             <if test="tenantKey != null">
                 tenant_key = #{tenantKey}
             </if>
+            <if test="action != null">
+                AND action = #{action}
+            </if>
         </where>
         ORDER BY
         <choose>
@@ -66,6 +69,9 @@
         <where>
             <if test="tenantKey != null">
                 tenant_key = #{tenantKey}
+            </if>
+            <if test="action != null">
+                AND action = #{action}
             </if>
         </where>
     </select>

@@ -110,12 +110,14 @@ public class AuditEventListener {
     if (routingKey.startsWith("tenant.")) return "TENANT";
     if (routingKey.startsWith("billing.")) return "BILLING";
     if (routingKey.startsWith("invoice.")) return "INVOICE";
+    if (routingKey.startsWith("auth.")) return "AUTHENTICATION";
     return "UNKNOWN";
   }
 
   private String inferEntityId(final Map<String, Object> payload) {
     if (payload.containsKey("userId")) return String.valueOf(payload.get("userId"));
     if (payload.containsKey("tenantId")) return String.valueOf(payload.get("tenantId"));
+    if (payload.containsKey("email")) return String.valueOf(payload.get("email")); // For signin attempts
     if (payload.containsKey("id")) return String.valueOf(payload.get("id"));
     return null;
   }
@@ -126,6 +128,10 @@ public class AuditEventListener {
     }
     if (action.contains("UPDATE") || action.contains("CREATED")) {
       return ActivitySeverity.INFO;
+    }
+    // Signin attempts - failed attempts are medium severity, successful are low
+    if (action.contains("SIGNIN") || action.contains("LOGIN")) {
+      return ActivitySeverity.MEDIUM;
     }
     return ActivitySeverity.LOW;
   }

@@ -51,7 +51,7 @@ public class MyBatisAuditStore implements AuditStore {
   }
 
   @Override
-  public Page<AuditRecord> findAllByTenantKey(final String tenantKey, final Pageable pageable) {
+  public Page<AuditRecord> findAllByTenantKey(final String tenantKey, final String action, final Pageable pageable) {
     String sortBy = "occurred_at";
     String sortDir = "DESC";
 
@@ -61,8 +61,8 @@ public class MyBatisAuditStore implements AuditStore {
       sortDir = order.getDirection().name();
     }
 
-    final var records = auditMapper.findAll(tenantKey, sortBy, sortDir, pageable.getOffset(), pageable.getPageSize());
-    final var total = auditMapper.count(tenantKey);
+    final var records = auditMapper.findAll(tenantKey, action, sortBy, sortDir, pageable.getOffset(), pageable.getPageSize());
+    final var total = auditMapper.count(tenantKey, action);
     return new PageImpl<>(records, pageable, total);
   }
 
