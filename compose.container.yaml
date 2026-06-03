@@ -17,6 +17,12 @@ services:
       file: compose.base.yaml
       service: mailhog
 
+  # DbGate - Database Administration Tool
+  dbgate:
+    extends:
+      file: compose.base.yaml
+      service: dbgate
+
   # Audit Service - Full platform run including build phase
   auditservice:
     extends:
@@ -33,6 +39,8 @@ volumes:
     name: iqkv_auditservice_postgres_data_dev
   rabbitmq_auditservice_data:
     name: iqkv_auditservice_rabbitmq_data_dev
+  dbgate_auditservice_data:
+    name: iqkv_auditservice_dbgate_data_dev
   auditservice_logs:
     name: auditservice_logs_dev
   auditservice_tmp:
