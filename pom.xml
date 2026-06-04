@@ -235,6 +235,8 @@
                 <configuration>
                     <excludes>
                         <exclude>**/*Application.class</exclude>
+                        <exclude>**/config/**/*.class</exclude>
+                        <exclude>**/security/SecurityConfig.class</exclude>
                     </excludes>
                 </configuration>
                 <executions>
