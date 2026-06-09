@@ -28,6 +28,7 @@ import com.iqkv.foundation.auditservice.infrastructure.config.RabbitMQConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 
@@ -35,6 +36,7 @@ import org.springframework.stereotype.Component;
  * Consumes events from the shared platform exchange and transforms them into audit logs.
  */
 @Component
+@ConditionalOnProperty(name = "iqkv.messaging.rabbitmq.enabled", havingValue = "true")
 public class AuditEventListener {
 
   private static final Logger log = LoggerFactory.getLogger(AuditEventListener.class);
@@ -73,7 +75,9 @@ public class AuditEventListener {
 
     // 2. Generic transformation logic
     final String action = (String) payload.getOrDefault("eventType", routingKey);
-    final String tenantKey = (String) payload.get("tenantKey");
+    final String tenantKey = payload.get("tenantKey") != null
+        ? (String) payload.get("tenantKey")
+        : (String) payload.get("tenantId"); // UserEvent uses "tenantId" instead of "tenantKey"
     final String occurredAtStr = (String) payload.get("occurredAt");
     final Instant occurredAt = occurredAtStr != null ? Instant.parse(occurredAtStr) : Instant.now();
 

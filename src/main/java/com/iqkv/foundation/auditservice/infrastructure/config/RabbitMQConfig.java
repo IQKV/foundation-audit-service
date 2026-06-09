@@ -22,6 +22,7 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -30,11 +31,13 @@ import org.springframework.context.annotation.Configuration;
  * Declares the audit queue and binds it to the shared platform events exchange.
  */
 @Configuration
+@ConditionalOnProperty(name = "iqkv.messaging.rabbitmq.enabled", havingValue = "true")
 public class RabbitMQConfig {
 
   public static final String EVENTS_EXCHANGE = "iqkv.events";
   public static final String AUDIT_QUEUE = "iqkv.audit.service.events";
-  public static final String DLX_EXCHANGE = "iqkv.events.dlx";
+  // Aligned with the platform-wide DLX declared by iam-service (was "iqkv.events.dlx")
+  public static final String DLX_EXCHANGE = "iqkv.dlx";
   public static final String AUDIT_DLQ = "iqkv.audit.service.events.dlq";
 
   @Bean
