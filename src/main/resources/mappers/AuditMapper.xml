@@ -3,21 +3,23 @@
 <mapper namespace="com.iqkv.foundation.auditservice.infrastructure.persistence.AuditMapper">
 
     <resultMap id="AuditRecordResultMap" type="com.iqkv.foundation.auditservice.audit.domain.AuditRecord">
-        <id property="id" column="id"/>
-        <result property="action" column="action"/>
-        <result property="entityType" column="entity_type"/>
-        <result property="entityId" column="entity_id"/>
-        <result property="actorId" column="actor_id"/>
-        <result property="actorType" column="actor_type"/>
-        <result property="actorEmail" column="actor_email"/>
-        <result property="actorIp" column="actor_ip"/>
-        <result property="actorUa" column="actor_ua"/>
-        <result property="impersonatorId" column="impersonator_id"/>
-        <result property="tenantKey" column="tenant_key"/>
-        <result property="severity" column="severity"/>
-        <result property="details" column="details" typeHandler="com.iqkv.foundation.auditservice.infrastructure.persistence.JsonbTypeHandler"/>
-        <result property="occurredAt" column="occurred_at"/>
-        <result property="correlationId" column="correlation_id"/>
+        <constructor>
+            <idArg column="id"             javaType="java.util.UUID"                                                                    />
+            <arg   column="action"         javaType="java.lang.String"                                                                  />
+            <arg   column="entity_type"    javaType="java.lang.String"                                                                  />
+            <arg   column="entity_id"      javaType="java.lang.String"                                                                  />
+            <arg   column="actor_id"       javaType="java.lang.String"                                                                  />
+            <arg   column="actor_type"     javaType="java.lang.String"                                                                  />
+            <arg   column="actor_email"    javaType="java.lang.String"                                                                  />
+            <arg   column="actor_ip"       javaType="java.lang.String"                                                                  />
+            <arg   column="actor_ua"       javaType="java.lang.String"                                                                  />
+            <arg   column="impersonator_id" javaType="java.lang.String"                                                                 />
+            <arg   column="tenant_key"     javaType="java.lang.String"                                                                  />
+            <arg   column="severity"       javaType="com.iqkv.foundation.audit.model.enums.ActivitySeverity"                            />
+            <arg   column="details"        javaType="java.util.Map"    typeHandler="com.iqkv.foundation.auditservice.infrastructure.persistence.JsonbTypeHandler"/>
+            <arg   column="occurred_at"    javaType="java.time.Instant"                                                                 />
+            <arg   column="correlation_id" javaType="java.lang.String"                                                                  />
+        </constructor>
     </resultMap>
 
     <insert id="insert">
