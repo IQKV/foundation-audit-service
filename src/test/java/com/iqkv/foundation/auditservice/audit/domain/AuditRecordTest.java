@@ -51,21 +51,21 @@ class AuditRecordTest {
         "correlationId"
     );
 
-    assertEquals(id, record.id());
-    assertEquals("action", record.action());
-    assertEquals("entityType", record.entityType());
-    assertEquals("entityId", record.entityId());
-    assertEquals("actorId", record.actorId());
-    assertEquals("actorType", record.actorType());
-    assertEquals("actorEmail", record.actorEmail());
-    assertEquals("actorIp", record.actorIp());
-    assertEquals("actorUa", record.actorUa());
-    assertEquals("impersonatorId", record.impersonatorId());
-    assertEquals("tenantKey", record.tenantKey());
-    assertEquals(ActivitySeverity.INFO, record.severity());
-    assertEquals(details, record.details());
-    assertEquals(occurredAt, record.occurredAt());
-    assertEquals("correlationId", record.correlationId());
+    assertEquals(id, record.getId());
+    assertEquals("action", record.getAction());
+    assertEquals("entityType", record.getEntityType());
+    assertEquals("entityId", record.getEntityId());
+    assertEquals("actorId", record.getActorId());
+    assertEquals("actorType", record.getActorType());
+    assertEquals("actorEmail", record.getActorEmail());
+    assertEquals("actorIp", record.getActorIp());
+    assertEquals("actorUa", record.getActorUa());
+    assertEquals("impersonatorId", record.getImpersonatorId());
+    assertEquals("tenantKey", record.getTenantKey());
+    assertEquals(ActivitySeverity.INFO, record.getSeverity());
+    assertEquals(details, record.getDetails());
+    assertEquals(occurredAt, record.getOccurredAt());
+    assertEquals("correlationId", record.getCorrelationId());
   }
 
   @Test
@@ -88,7 +88,7 @@ class AuditRecordTest {
         "correlationId"
     );
 
-    assertNotNull(record.id());
+    assertNotNull(record.getId());
   }
 
   @Test
@@ -111,7 +111,7 @@ class AuditRecordTest {
         "correlationId"
     );
 
-    assertNotNull(record.occurredAt());
+    assertNotNull(record.getOccurredAt());
   }
 
   @Test
@@ -134,7 +134,7 @@ class AuditRecordTest {
         "correlationId"
     );
 
-    assertEquals(Map.of(), record.details());
+    assertEquals(Map.of(), record.getDetails());
   }
 
   @Test
@@ -178,6 +178,6 @@ class AuditRecordTest {
         "correlationId"
     );
 
-    assertNotEquals(record1, record2);
+    assertNotEquals(record1.getActorUa(), record2.getActorUa());
   }
 }
