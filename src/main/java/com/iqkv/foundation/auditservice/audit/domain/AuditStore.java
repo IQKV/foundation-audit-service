@@ -49,10 +49,11 @@ public interface AuditStore {
    *
    * @param tenantKey optional tenant filter
    * @param action    optional action filter (e.g., "auth.signin.attempt")
+   * @param severity  optional severity filter (e.g., "HIGH" or "CRITICAL")
    * @param pageable  pagination info
    * @return page of records
    */
-  Page<AuditRecord> findAllByTenantKey(String tenantKey, String action, Pageable pageable);
+  Page<AuditRecord> findAllByTenantKey(String tenantKey, String action, String severity, Pageable pageable);
 
   /**
    * Counts records grouped by action.

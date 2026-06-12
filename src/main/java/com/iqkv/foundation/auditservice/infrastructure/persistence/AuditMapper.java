@@ -37,12 +37,15 @@ public interface AuditMapper {
 
   List<AuditRecord> findAll(@Param("tenantKey") String tenantKey,
                             @Param("action") String action,
+                            @Param("severity") String severity,
                             @Param("sortBy") String sortBy,
                             @Param("sortDir") String sortDir,
                             @Param("offset") long offset,
                             @Param("limit") int limit);
 
-  long count(@Param("tenantKey") String tenantKey, @Param("action") String action);
+  long count(@Param("tenantKey") String tenantKey,
+             @Param("action") String action,
+             @Param("severity") String severity);
 
   List<AuditActionCount> countByAction(@Param("tenantKey") String tenantKey);
 }

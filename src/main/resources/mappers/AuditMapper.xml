@@ -47,6 +47,9 @@
             <if test="action != null">
                 AND action = #{action}
             </if>
+            <if test="severity != null">
+                AND severity = #{severity}
+            </if>
         </where>
         ORDER BY
         <choose>
@@ -72,6 +75,9 @@
             </if>
             <if test="action != null">
                 AND action = #{action}
+            </if>
+            <if test="severity != null">
+                AND severity = #{severity}
             </if>
         </where>
     </select>

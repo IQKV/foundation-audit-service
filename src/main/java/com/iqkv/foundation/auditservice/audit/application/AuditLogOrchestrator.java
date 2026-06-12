@@ -78,8 +78,8 @@ public class AuditLogOrchestrator implements AuditLogService {
   }
 
   @Transactional(readOnly = true)
-  public Page<AuditRecord> searchRecords(final String tenantKey, final String action, final Pageable pageable) {
-    return auditStore.findAllByTenantKey(tenantKey, action, pageable);
+  public Page<AuditRecord> searchRecords(final String tenantKey, final String action, final String severity, final Pageable pageable) {
+    return auditStore.findAllByTenantKey(tenantKey, action, severity, pageable);
   }
 
   @Transactional(readOnly = true)
