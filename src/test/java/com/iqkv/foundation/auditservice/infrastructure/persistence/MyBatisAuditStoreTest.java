@@ -75,10 +75,10 @@ class MyBatisAuditStoreTest {
     final PageRequest pageable = PageRequest.of(0, 10);
     final AuditRecord record = createTestRecord();
 
-    when(auditMapper.findAll(tenantKey, action, "occurred_at", "DESC", 0, 10)).thenReturn(List.of(record));
-    when(auditMapper.count(tenantKey, action)).thenReturn(1L);
+    when(auditMapper.findAll(tenantKey, action, null, "occurred_at", "DESC", 0, 10)).thenReturn(List.of(record));
+    when(auditMapper.count(tenantKey, action, null)).thenReturn(1L);
 
-    final var result = myBatisAuditStore.findAllByTenantKey(tenantKey, action, pageable);
+    final var result = myBatisAuditStore.findAllByTenantKey(tenantKey, action, null, pageable);
 
     assertEquals(1, result.getTotalElements());
     assertEquals(record, result.getContent().get(0));
@@ -91,10 +91,10 @@ class MyBatisAuditStoreTest {
     final PageRequest pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "actor_id"));
     final AuditRecord record = createTestRecord();
 
-    when(auditMapper.findAll(tenantKey, action, "actor_id", "ASC", 0, 10)).thenReturn(List.of(record));
-    when(auditMapper.count(tenantKey, action)).thenReturn(1L);
+    when(auditMapper.findAll(tenantKey, action, null, "actor_id", "ASC", 0, 10)).thenReturn(List.of(record));
+    when(auditMapper.count(tenantKey, action, null)).thenReturn(1L);
 
-    final var result = myBatisAuditStore.findAllByTenantKey(tenantKey, action, pageable);
+    final var result = myBatisAuditStore.findAllByTenantKey(tenantKey, action, null, pageable);
 
     assertEquals(1, result.getTotalElements());
   }
