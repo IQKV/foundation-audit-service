@@ -112,28 +112,59 @@ public class AuditEventListener {
   private String inferEntityType(final String routingKey) {
     if (routingKey.startsWith("user.")) return "USER";
     if (routingKey.startsWith("tenant.")) return "TENANT";
-    if (routingKey.startsWith("billing.")) return "BILLING";
+    if (routingKey.startsWith("subscription.")) return "SUBSCRIPTION";
     if (routingKey.startsWith("invoice.")) return "INVOICE";
+    if (routingKey.startsWith("payment.")) return "INVOICE";
+    if (routingKey.startsWith("refund.")) return "INVOICE";
     if (routingKey.startsWith("auth.")) return "AUTHENTICATION";
     return "UNKNOWN";
   }
 
   private String inferEntityId(final Map<String, Object> payload) {
+    // Billing — subscription events
+    if (payload.containsKey("externalSubscriptionId")) return String.valueOf(payload.get("externalSubscriptionId"));
+    // Billing — invoice / payment / refund events
+    if (payload.containsKey("externalInvoiceId")) return String.valueOf(payload.get("externalInvoiceId"));
+    if (payload.containsKey("externalRefundId")) return String.valueOf(payload.get("externalRefundId"));
+    // IAM — user events
     if (payload.containsKey("userId")) return String.valueOf(payload.get("userId"));
     if (payload.containsKey("tenantId")) return String.valueOf(payload.get("tenantId"));
-    if (payload.containsKey("email")) return String.valueOf(payload.get("email")); // For signin attempts
+    // Signin attempts use email as the identifier
+    if (payload.containsKey("email")) return String.valueOf(payload.get("email"));
     if (payload.containsKey("id")) return String.valueOf(payload.get("id"));
     return null;
   }
 
   private ActivitySeverity inferSeverity(final String action) {
-    if (action.contains("DELETE") || action.contains("FAILED") || action.contains("SUSPENDED")) {
+    // Bans are critical security actions
+    if (action.contains("BANNED")) {
+      return ActivitySeverity.CRITICAL;
+    }
+    // Payment failures and refunds are high-severity financial events
+    if (action.contains("PAYMENT_FAILED") || action.contains("REFUND")) {
       return ActivitySeverity.HIGH;
     }
-    if (action.contains("UPDATE") || action.contains("CREATED")) {
+    // Credential changes — always high
+    if (action.contains("PASSWORD_CHANGED") || action.contains("PASSWORD_RESET_COMPLETED")) {
+      return ActivitySeverity.HIGH;
+    }
+    if (action.contains("DELETE") || action.contains("CANCELLED") || action.contains("SUSPENDED")) {
+      return ActivitySeverity.HIGH;
+    }
+    // Password reset initiated, account unlocked, unban — medium
+    if (action.contains("PASSWORD_RESET_INITIATED") || action.contains("UNLOCKED") || action.contains("UNBANNED")) {
+      return ActivitySeverity.MEDIUM;
+    }
+    if (action.contains("FAILED")) {
+      return ActivitySeverity.MEDIUM;
+    }
+    if (action.contains("STATUS_CHANGED") || action.contains("UPDATE") || action.contains("UPDATED")) {
       return ActivitySeverity.INFO;
     }
-    // Signin attempts - failed attempts are medium severity, successful are low
+    if (action.contains("CREATED") || action.contains("PAID") || action.contains("FINALIZED")) {
+      return ActivitySeverity.INFO;
+    }
+    // Signin attempts — failed are medium, successful are low
     if (action.contains("SIGNIN") || action.contains("LOGIN")) {
       return ActivitySeverity.MEDIUM;
     }
