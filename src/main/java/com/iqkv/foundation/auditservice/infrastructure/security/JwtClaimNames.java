@@ -17,7 +17,8 @@
 package com.iqkv.foundation.auditservice.infrastructure.security;
 
 /**
- * Custom JWT claim names used across the platform.
+ * Constants for JWT claim names used throughout the audit service.
+ * All JWT claim access must use these constants — never raw strings.
  */
 public final class JwtClaimNames {
 
@@ -36,6 +37,8 @@ public final class JwtClaimNames {
   public static final String AUTHORITIES = "authorities";
   public static final String EMAIL_VERIFIED = "email_verified";
   public static final String PLAN_CODE = "plan_code";
+  public static final String ONBOARDING_COMPLETED = "onboarding_completed";
+  public static final String PROFILE_COMPLETED = "profile_completed";
 
   public static final String TYPE_ACCESS = "access";
   public static final String TYPE_REFRESH = "refresh";
