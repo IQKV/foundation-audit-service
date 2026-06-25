@@ -1,10 +1,22 @@
-# Foundation Audit Service 📋
+> ## 🤔 What is this service all about?
+>
+> - Centralized auditing microservice for the IQ Key Value platform.
+> - Passive observation: consumes business events without intrusive changes to domain services.
+> - Normalizes diverse platform events into a unified, queryable audit trail.
+> - Make the project easy to maintain with **8 issue templates**.
+> - Quick-start documentation
+> - Manage issues with **20 issue labels**.
+> - Make _community healthier_ with all the guides like code of conduct, contributing, support, security...
 
-Centralized microservice for platform-wide event consumption, transformation, and storage. Acts as the single source of truth for all activity logs across the Key Value Platform.
+---
+
+# 📋 IQ Key Value Audit Service
+
+Centralized microservice for platform-wide event consumption, transformation, and storage. Acts as the source of truth for all activity logs across the IQ Key Value ecosystem.
 
 ## About
 
-The Audit service handles the aggregation and storage of activity logs from all platform services:
+The Audit service is the compliance and observability backbone of the platform:
 
 - **Passive Observation** — acts as a platform-wide observer by binding to the existing `iqkv.events` exchange; requires zero code changes in domain services for basic auditing
 - **Event Transformation** — maps domain-specific data (e.g., `UserEvent`, `TenantEvent`) into a generic `AuditRecord` format with enriched technical context
@@ -13,6 +25,21 @@ The Audit service handles the aggregation and storage of activity logs from all 
 - **Extensible Architecture (SPI)** — follows a provider-friendly design via `foundation-audit-spi`, allowing easy plug-in of alternative backends like Elasticsearch or custom SIEMs
 - **High-Sensitivity Tracking** — consumes standard `AuditEvent` messages published by services for critical actions that don't trigger typical business events
 - **Admin Search API** — provides a secured, paginated, and filterable API for Platform Administrators to review audit trails across all tenants
+
+## Messaging & Integration
+
+The Audit service acts as a consumer for all lifecycle events published by other platform services.
+
+**Exchange**: `iqkv.events` (Topic)
+
+### Consumption Bindings
+
+| Routing Key | Source Service               | Description                                                  |
+| :---------- | :--------------------------- | :----------------------------------------------------------- |
+| `user.#`    | `foundation-iam-service`     | Captures user signups, profile updates, and deletions.       |
+| `tenant.#`  | `foundation-iam-service`     | Tracks tenant creation, provisioning status, and suspension. |
+| `billing.#` | `foundation-billing-service` | Monitors subscription changes and payment events.            |
+| `audit.#`   | All Services                 | Consumes explicit high-sensitivity `AuditEvent` messages.    |
 
 ## Quick Links
 
@@ -25,7 +52,7 @@ The Audit service handles the aggregation and storage of activity logs from all 
 
 Base path: `/api/v1/audits`
 
-### Audit Log Management
+### Audit Log Management — `/api/v1/audits`
 
 | Method | Path    | Auth                 | Description                                                        |
 | :----- | :------ | :------------------- | :----------------------------------------------------------------- |
@@ -42,6 +69,7 @@ Base path: `/api/v1/audits`
 - RabbitMQ (passive event consumption)
 - foundation-audit-model & foundation-audit-spi
 - Micrometer + Prometheus
+- springdoc-openapi (Swagger UI)
 
 ## Observability
 
@@ -52,6 +80,9 @@ The service provides comprehensive monitoring via Micrometer and Prometheus:
     - `audit.persistence.duration`: Latency of audit record storage operations.
     - `audit.search.latency`: Performance of administrative log queries.
     - `audit.storage.usage`: Volume of audit records persisted.
+- **Grafana Dashboards**: Pre-configured dashboards are available in `docker/grafana/provisioning/dashboards`:
+    - **JVM**: Core JVM and Spring Boot health.
+    - **Audit Service**: Custom consumption and storage metrics.
 
 ## Prerequisites
 
@@ -72,10 +103,13 @@ pnpm install
 
 # Copy environment variables
 cp .env.example .env.local
+# Edit .env.local — defaults work for local Docker setup
+
 # Start infrastructure dependencies (PostgreSQL, RabbitMQ)
 docker compose up -d
 
-# Run the service
+# Run the service from your IDE or CLI
+export $(grep -v '^#' .env.local | xargs)
 ./mvnw spring-boot:run -Pdev
 # → API:      http://localhost:8080
 # → Actuator: http://localhost:8081/actuator/health
@@ -97,7 +131,7 @@ docker compose up -d
 | `RABBITMQ_PASSWORD` | `svc_audit_rmq` | RabbitMQ password                            |
 | `STORAGE_TYPE`      | `postgres`      | Audit backend: `postgres` or `elasticsearch` |
 
-Copy `.env.example` to `.env.local` (or `.env.uat` / `.env.prd`) and fill in production values.
+> Copy `.env.example` to `.env.local` / `.env.uat` / `.env.prd` and fill in values per environment.
 
 ## Maven Commands
 
@@ -120,11 +154,25 @@ Copy `.env.example` to `.env.local` (or `.env.uat` / `.env.prd`) and fill in pro
 
 ## Docker
 
+The project provides two Docker Compose configurations for different workflows:
+
+### 1. Infrastructure-only (Local IDE Development)
+
+Starts only the database and message broker. The Audit service is expected to be run from your IDE or CLI.
+
+```bash
+docker compose up -d
+```
+
+### 2. Full Stack (Containerized Development)
+
+Starts the entire stack including the Audit service container.
+
 ```bash
 # Build image
 docker build -t iqkv/foundation-audit-service:latest .
 
-# Run with full platform stack
+# Run everything
 docker compose -f compose.container.yaml up -d
 ```
 
