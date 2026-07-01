@@ -41,6 +41,16 @@
         <createIndex tableName="audit_logs" indexName="idx_audit_logs_actor">
             <column name="actor_id"/>
         </createIndex>
+        
+        <rollback>
+            <!-- Drop indexes first (in reverse order of creation) -->
+            <dropIndex tableName="audit_logs" indexName="idx_audit_logs_actor"/>
+            <dropIndex tableName="audit_logs" indexName="idx_audit_logs_occurred_at"/>
+            <dropIndex tableName="audit_logs" indexName="idx_audit_logs_tenant"/>
+            
+            <!-- Drop the table -->
+            <dropTable tableName="audit_logs"/>
+        </rollback>
     </changeSet>
 
 </databaseChangeLog>
