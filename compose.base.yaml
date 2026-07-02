@@ -4,9 +4,9 @@ services:
     image: postgres:17-alpine
     container_name: foundation-auditservice-postgres-dev
     environment:
-      POSTGRES_DB: auditservice
-      POSTGRES_USER: svc_auditservice_dba
-      POSTGRES_PASSWORD: svc_auditservice_dba
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_INITDB_ARGS: "--encoding=UTF8 --lc-collate=C --lc-ctype=C"
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
@@ -17,7 +17,7 @@ services:
     networks:
       - auditservice-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U svc_auditservice_dba -d auditservice -h localhost"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} -h localhost"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -45,8 +45,8 @@ services:
     image: rabbitmq:3.13-management-alpine
     container_name: foundation-auditservice-rabbitmq-dev
     environment:
-      RABBITMQ_DEFAULT_USER: svc_auditservice_rmq
-      RABBITMQ_DEFAULT_PASS: svc_auditservice_rmq
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
       RABBITMQ_DEFAULT_VHOST: /
       RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: -rabbit log_levels [{connection,error},{default,info}] disk_free_limit 2147483648
     ports:
@@ -112,28 +112,28 @@ services:
     container_name: foundation-auditservice-dev
     environment:
       # Spring Configuration
-      SPRING_PROFILES_ACTIVE: local
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-local}
       SPRING_APPLICATION_NAME: auditservice
 
       # Database Configuration
       DB_HOST: postgres-auditservice
       DB_PORT: 5432
-      DB_NAME: auditservice
-      DB_USERNAME: svc_auditservice_dba
-      DB_PASSWORD: svc_auditservice_dba
+      DB_NAME: ${DB_NAME}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
 
       # RabbitMQ Configuration
       RABBITMQ_HOST: rabbitmq-auditservice
       RABBITMQ_PORT: 5672
-      RABBITMQ_USERNAME: svc_auditservice_rmq
-      RABBITMQ_PASSWORD: svc_auditservice_rmq
+      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
 
       # Mail Configuration (MailHog)
       MAIL_HOST: mailhog
       MAIL_PORT: 1025
-      MAIL_USERNAME: ""
-      MAIL_PASSWORD: ""
-      MAIL_FROM: noreply@iqkv.dev
+      MAIL_USERNAME: ${MAIL_USERNAME:-}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+      MAIL_FROM: ${MAIL_FROM:-noreply@iqkv.dev}
       MAIL_REPLY_TO: ""
 
       # Observability

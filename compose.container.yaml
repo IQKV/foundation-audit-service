@@ -4,12 +4,22 @@ services:
     extends:
       file: compose.base.yaml
       service: postgres-auditservice
+    env_file:
+      - path: .env.local
+        required: false
+      - path: .env
+        required: false
 
   # RabbitMQ for Audit Service
   rabbitmq-auditservice:
     extends:
       file: compose.base.yaml
       service: rabbitmq-auditservice
+    env_file:
+      - path: .env.local
+        required: false
+      - path: .env
+        required: false
 
   # MailHog for local email testing
   mailhog:
@@ -28,6 +38,11 @@ services:
     extends:
       file: compose.base.yaml
       service: auditservice
+    env_file:
+      - path: .env.local
+        required: false
+      - path: .env
+        required: false
 
 networks:
   auditservice-network:

@@ -61,13 +61,13 @@ iqkv:
     host: ${DB_HOST:localhost}
     port: ${DB_PORT:5432}
     name: ${DB_NAME:auditservice}
-    username: ${DB_USERNAME:svc_auditservice_dba}
-    password: ${DB_PASSWORD:svc_auditservice_dba}
+    username: ${DB_USERNAME:svc_audit_dba}
+    password: ${DB_PASSWORD:svc_audit_dba}
   rabbitmq:
     host: ${RABBITMQ_HOST:localhost}
     port: ${RABBITMQ_PORT:5672}
-    username: ${RABBITMQ_USERNAME:svc_auditservice_rmq}
-    password: ${RABBITMQ_PASSWORD:svc_auditservice_rmq}
+    username: ${RABBITMQ_USERNAME:svc_audit_rmq}
+    password: ${RABBITMQ_PASSWORD:svc_audit_rmq}
   messaging:
     rabbitmq:
       # Disabled by default; enabled per-profile (local, sit, uat, prd)

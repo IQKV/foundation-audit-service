@@ -11,14 +11,14 @@ The `connections.jsonl` file contains pre-configured connections for all Audit s
 - **ID**: `postgres-audit`
 - **Server**: `postgres-auditservice:5432`
 - **Database**: `audit`
-- **User**: `svc_auditservice_dba`
+- **User**: `svc_audit_dba`
 - **Engine**: `postgres@dbgate-plugin-postgres`
 
 ### 2. RabbitMQ - Audit Service
 
 - **ID**: `rabbitmq-management`
 - **Server**: `rabbitmq-auditservice:15672`
-- **User**: `svc_auditservice_rmq`
+- **User**: `svc_audit_rmq`
 - **Engine**: `rabbitmq@dbgate-plugin-rabbitmq`
 
 ## Usage
@@ -151,7 +151,7 @@ If you change credentials in your `.env` or compose files, update `connections.j
     "port": 5432,
     "user": "NEW_USER",
     "password": "NEW_PASSWORD",
-    "database": "audit",
+    "database": "auditservice",
     "displayName": "PostgreSQL - Audit Service"
 }
 ```

@@ -72,6 +72,8 @@ pnpm install
 
 # Copy environment variables
 cp .env.example .env.local
+# Edit .env.local — defaults work for local Docker setup
+
 # Start infrastructure dependencies (PostgreSQL, RabbitMQ)
 docker compose up -d
 
@@ -84,20 +86,24 @@ docker compose up -d
 
 ## Environment Variables
 
-| Variable            | Default         | Description                                  |
-| :------------------ | :-------------- | :------------------------------------------- |
-| `DB_HOST`           | `localhost`     | PostgreSQL host                              |
-| `DB_PORT`           | `5432`          | PostgreSQL port                              |
-| `DB_NAME`           | `audit`         | Database name                                |
-| `DB_USERNAME`       | `svc_audit_dba` | Database user                                |
-| `DB_PASSWORD`       | `svc_audit_dba` | Database password                            |
-| `RABBITMQ_HOST`     | `localhost`     | RabbitMQ host                                |
-| `RABBITMQ_PORT`     | `5672`          | RabbitMQ AMQP port                           |
-| `RABBITMQ_USERNAME` | `svc_audit_rmq` | RabbitMQ user                                |
-| `RABBITMQ_PASSWORD` | `svc_audit_rmq` | RabbitMQ password                            |
-| `STORAGE_TYPE`      | `postgres`      | Audit backend: `postgres` or `elasticsearch` |
+| Variable                 | Default            | Description                                  |
+| :----------------------- | :----------------- | :------------------------------------------- |
+| `DB_HOST`                | `localhost`        | PostgreSQL host                              |
+| `DB_PORT`                | `5432`             | PostgreSQL port                              |
+| `DB_NAME`                | `auditservice`     | Database name                                |
+| `DB_USERNAME`            | `svc_audit_dba`    | Database user                                |
+| `DB_PASSWORD`            | `svc_audit_dba`    | Database password                            |
+| `RABBITMQ_HOST`          | `localhost`        | RabbitMQ host                                |
+| `RABBITMQ_PORT`          | `5672`             | RabbitMQ AMQP port                           |
+| `RABBITMQ_USERNAME`      | `svc_audit_rmq`    | RabbitMQ user                                |
+| `RABBITMQ_PASSWORD`      | `svc_audit_rmq`    | RabbitMQ password                            |
+| `MAIL_HOST`              | `localhost`        | SMTP host                                    |
+| `MAIL_PORT`              | `1025`             | SMTP port (MailHog default)                  |
+| `MAIL_FROM`              | `noreply@iqkv.dev` | Sender address                               |
+| `SPRING_PROFILES_ACTIVE` | `local`            | Active Spring profile                        |
+| `STORAGE_TYPE`           | `postgres`         | Audit backend: `postgres` or `elasticsearch` |
 
-Copy `.env.example` to `.env.local` (or `.env.uat` / `.env.prd`) and fill in production values.
+> Copy `.env.example` to `.env.local` / `.env.uat` / `.env.prd` and fill in values per environment. The defaults in `.env.example` match the local Docker Compose setup — no edits needed for first-run.
 
 ## Maven Commands
 
