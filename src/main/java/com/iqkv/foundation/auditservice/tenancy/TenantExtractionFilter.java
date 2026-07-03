@@ -25,6 +25,7 @@ import java.net.URI;
 import java.util.UUID;
 
 import com.iqkv.foundation.auditservice.infrastructure.security.JwtClaimNames;
+import com.iqkv.foundation.tenancy.TenantContext;
 import org.slf4j.MDC;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
