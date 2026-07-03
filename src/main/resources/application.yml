@@ -16,7 +16,7 @@ spring:
     password: ${iqkv.rabbitmq.password}
   liquibase:
     enabled: false
-    change-log: classpath:db/changelog/db.changelog-master.xml
+    change-log: classpath:db/changelog/system/db.changelog-system.xml
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration
   messages:
@@ -73,7 +73,10 @@ iqkv:
       # Disabled by default; enabled per-profile (local, sit, uat, prd)
       enabled: false
   liquibase:
-    change-log: db/changelog/db.changelog-master.xml
+    system-change-log: db/changelog/system/db.changelog-system.xml
+    tenant-change-log: db/changelog/tenant/db.changelog-tenant.xml
+    demo-tenants: []
+    change-log: db/changelog/system/db.changelog-system.xml
   platform:
     # Platform-wide operational mode: MULTI_TENANT (default) or SINGLE_TENANT
     rollout-mode: ${ROLLOUT_MODE:MULTI_TENANT}
