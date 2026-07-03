@@ -7,7 +7,7 @@
 
 spring:
   liquibase:
-    enabled: true
+    enabled: false
     change-log: classpath:db/changelog/system/db.changelog-system.xml
     contexts: demo
 
