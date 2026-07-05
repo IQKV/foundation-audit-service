@@ -5,11 +5,11 @@
     <parent>
         <groupId>com.iqkv</groupId>
         <artifactId>boot-parent-pom</artifactId>
-        <version>0.24.20</version>
+        <version>0.24.21</version>
     </parent>
     <groupId>com.iqkv</groupId>
     <artifactId>foundation-audit-service</artifactId>
-    <version>0.25.0-SNAPSHOT</version>
+    <version>0.0.0-SNAPSHOT</version>
     <name>Audit Service</name>
     <description>Implements auditing across by capturing events across the platform.</description>
     <developers>
