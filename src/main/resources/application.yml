@@ -73,6 +73,7 @@ iqkv:
       # Disabled by default; enabled per-profile (local, sit, uat, prd)
       enabled: false
   liquibase:
+    tenant-runner-enabled: true
     system-change-log: db/changelog/system/db.changelog-system.xml
     tenant-change-log: db/changelog/tenant/db.changelog-tenant.xml
     demo-tenants: []

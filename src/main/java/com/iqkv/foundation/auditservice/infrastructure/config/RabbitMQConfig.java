@@ -36,13 +36,29 @@ public class RabbitMQConfig {
 
   public static final String EVENTS_EXCHANGE = "iqkv.events";
   public static final String AUDIT_QUEUE = "iqkv.audit.service.events";
+  public static final String TENANT_PROVISIONING_QUEUE = "iqkv.audit.tenant.provisioning";
   // Aligned with the platform-wide DLX declared by iam-service (was "iqkv.events.dlx")
   public static final String DLX_EXCHANGE = "iqkv.dlx";
   public static final String AUDIT_DLQ = "iqkv.audit.service.events.dlq";
 
+  public static final String ROUTING_TENANT_CREATED = "tenant.created";
+
   @Bean
   public TopicExchange eventsExchange() {
     return new TopicExchange(EVENTS_EXCHANGE);
+  }
+
+  @Bean
+  public Queue tenantProvisioningQueue() {
+    return new Queue(TENANT_PROVISIONING_QUEUE, true, false, false, Map.of(
+        "x-dead-letter-exchange", DLX_EXCHANGE,
+        "x-dead-letter-routing-key", AUDIT_DLQ
+    ));
+  }
+
+  @Bean
+  public Binding tenantProvisioningBinding(final Queue tenantProvisioningQueue, final TopicExchange eventsExchange) {
+    return BindingBuilder.bind(tenantProvisioningQueue).to(eventsExchange).with(ROUTING_TENANT_CREATED);
   }
 
   @Bean
