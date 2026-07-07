@@ -1,2 +1,2 @@
-{"_id":"postgres-audit","engine":"postgres@dbgate-plugin-postgres","server":"postgres-auditservice","port":5432,"user":"svc_audit_dba","password":"svc_audit_dba","database":"auditservice","displayName":"PostgreSQL - Audit Service"}
-{"_id":"rabbitmq-management","engine":"rabbitmq@dbgate-plugin-rabbitmq","server":"rabbitmq-auditservice","port":15672,"user":"svc_audit_rmq","password":"svc_audit_rmq","displayName":"RabbitMQ - Audit Service"}
+{"_id":"postgres-audit-service","engine":"postgres@dbgate-plugin-postgres","server":"postgres-audit-service","port":5432,"user":"svc_audit_dba","password":"svc_audit_dba","database":"auditservice","displayName":"PostgreSQL - Audit Service"}
+{"_id":"rabbitmq-audit-service","engine":"rabbitmq@dbgate-plugin-rabbitmq","server":"rabbitmq-audit-service","port":15672,"user":"svc_audit_rmq","password":"svc_audit_rmq","displayName":"RabbitMQ - Audit Service"}

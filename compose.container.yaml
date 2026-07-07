@@ -1,25 +1,15 @@
 services:
   # PostgreSQL Database for Audit Service
-  postgres-auditservice:
+  postgres-audit:
     extends:
       file: compose.base.yaml
-      service: postgres-auditservice
-    env_file:
-      - path: .env.local
-        required: false
-      - path: .env
-        required: false
+      service: postgres-audit
 
   # RabbitMQ for Audit Service
-  rabbitmq-auditservice:
+  rabbitmq-audit:
     extends:
       file: compose.base.yaml
-      service: rabbitmq-auditservice
-    env_file:
-      - path: .env.local
-        required: false
-      - path: .env
-        required: false
+      service: rabbitmq-audit
 
   # MailHog for local email testing
   mailhog:
@@ -34,29 +24,24 @@ services:
       service: dbgate
 
   # Audit Service - Full platform run including build phase
-  auditservice:
+  audit-service:
     extends:
       file: compose.base.yaml
-      service: auditservice
-    env_file:
-      - path: .env.local
-        required: false
-      - path: .env
-        required: false
+      service: audit-service
 
 networks:
-  auditservice-network:
-    name: foundation-auditservice-network-dev
+  audit-service-network:
+    name: foundation-audit-network-dev
     external: false
 
 volumes:
-  postgres_auditservice_data:
-    name: iqkv_auditservice_postgres_data_dev
-  rabbitmq_auditservice_data:
-    name: iqkv_auditservice_rabbitmq_data_dev
-  dbgate_auditservice_data:
-    name: iqkv_auditservice_dbgate_data_dev
-  auditservice_logs:
-    name: auditservice_logs_dev
-  auditservice_tmp:
-    name: auditservice_tmp_dev
+  postgres_audit_data:
+    name: iqkv_audit_postgres_data_dev
+  rabbitmq_audit_data:
+    name: iqkv_audit_rabbitmq_data_dev
+  dbgate_audit_data:
+    name: iqkv_audit_dbgate_data_dev
+  audit_logs:
+    name: iqkv_audit_logs_dev
+  audit_tmp:
+    name: iqkv_audit_tmp_dev
