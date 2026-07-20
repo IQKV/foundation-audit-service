@@ -23,19 +23,69 @@ import org.junit.jupiter.api.Test;
 class AuthConfigurationPropertiesTest {
 
   @Test
-  void shouldCreateAuthConfigurationPropertiesWithValues() {
-    final var jwt = new AuthConfigurationProperties.Jwt("classpath:keys/public.pem");
+  void shouldCreateWithPublicKeyPath() {
+    final var jwt = new AuthConfigurationProperties.Jwt(null, "classpath:keys/public.pem");
     final var props = new AuthConfigurationProperties(jwt);
 
     assertNotNull(props.jwt());
+    assertNull(props.jwt().jwksUri());
     assertEquals("classpath:keys/public.pem", props.jwt().publicKeyPath());
   }
 
   @Test
+  void shouldCreateWithJwksUri() {
+    final var jwt = new AuthConfigurationProperties.Jwt(
+        "http://foundation-iam-service/.well-known/jwks.json", null);
+    final var props = new AuthConfigurationProperties(jwt);
+
+    assertNotNull(props.jwt());
+    assertEquals("http://foundation-iam-service/.well-known/jwks.json", props.jwt().jwksUri());
+    assertNull(props.jwt().publicKeyPath());
+  }
+
+  @Test
+  void validateShouldPassWithPublicKeyPath() {
+    final var props = new AuthConfigurationProperties(
+        new AuthConfigurationProperties.Jwt(null, "classpath:keys/public.pem"));
+    assertDoesNotThrow(props::validate);
+  }
+
+  @Test
+  void validateShouldPassWithJwksUri() {
+    final var props = new AuthConfigurationProperties(
+        new AuthConfigurationProperties.Jwt(
+            "http://foundation-iam-service/.well-known/jwks.json", null));
+    assertDoesNotThrow(props::validate);
+  }
+
+  @Test
+  void validateShouldFailWhenBothSet() {
+    final var props = new AuthConfigurationProperties(
+        new AuthConfigurationProperties.Jwt(
+            "http://foundation-iam-service/.well-known/jwks.json",
+            "classpath:keys/public.pem"));
+    assertThrows(IllegalStateException.class, props::validate);
+  }
+
+  @Test
+  void validateShouldFailWhenNeitherSet() {
+    final var props = new AuthConfigurationProperties(
+        new AuthConfigurationProperties.Jwt(null, null));
+    assertThrows(IllegalStateException.class, props::validate);
+  }
+
+  @Test
+  void validateShouldFailWhenBothBlank() {
+    final var props = new AuthConfigurationProperties(
+        new AuthConfigurationProperties.Jwt("", ""));
+    assertThrows(IllegalStateException.class, props::validate);
+  }
+
+  @Test
   void shouldTestEquality() {
-    final var jwt1 = new AuthConfigurationProperties.Jwt("path1");
-    final var jwt2 = new AuthConfigurationProperties.Jwt("path1");
-    final var jwt3 = new AuthConfigurationProperties.Jwt("path2");
+    final var jwt1 = new AuthConfigurationProperties.Jwt(null, "path1");
+    final var jwt2 = new AuthConfigurationProperties.Jwt(null, "path1");
+    final var jwt3 = new AuthConfigurationProperties.Jwt(null, "path2");
 
     assertEquals(jwt1, jwt2);
     assertNotEquals(jwt1, jwt3);
