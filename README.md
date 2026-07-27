@@ -1,6 +1,6 @@
 > ## 🤔 What is this service all about?
 >
-> - Centralized auditing microservice for the IQ Key Value platform.
+> - Centralized auditing microservice for the iQ Key Value platform.
 > - Passive observation: consumes business events without intrusive changes to domain services.
 > - Normalizes diverse platform events into a unified, queryable audit trail.
 > - Make the project easy to maintain with **8 issue templates**.
@@ -10,9 +10,9 @@
 
 ---
 
-# 📋 IQ Key Value Audit Service
+# 📋 iQ Key Value Audit Service
 
-Centralized microservice for platform-wide event consumption, transformation, and storage. Acts as the source of truth for all activity logs across the IQ Key Value ecosystem.
+Centralized microservice for platform-wide event consumption, transformation, and storage. Acts as the source of truth for all activity logs across the iQ Key Value ecosystem.
 
 ## About
 
