@@ -13,7 +13,7 @@ This document covers the three main deployment scenarios for the Audit Service: 
 | Docker         | 24+             | Required for all compose setups              |
 | Docker Compose | 2.20+           | `compose.yaml` uses `extends`                |
 | Node.js        | 22.15.0+        | Required only for git hooks (`pnpm install`) |
-| pnpm           | 11.0.8+         | Required only for git hooks                  |
+| pnpm           | 10.33.2+         | Required only for git hooks                  |
 
 ---
 
