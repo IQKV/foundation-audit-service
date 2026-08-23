@@ -90,6 +90,7 @@ public class TenantExtractionFilter extends OncePerRequestFilter {
     final String path = request.getRequestURI();
 
     return path.startsWith("/actuator/")
+           || path.equals("/api-docs")
            || path.startsWith("/api-docs/")
            || path.startsWith("/swagger-ui/")
            || path.startsWith("/api/v1/audit/admin/");
