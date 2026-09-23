@@ -12,8 +12,8 @@ importers:
         specifier: ^21.2.2
         version: 21.2.2(@types/node@22.19.11)(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.4.0)(typescript@5.9.3)
       '@commitlint/config-conventional':
-        specifier: ^21.2.2
-        version: 21.2.2
+        specifier: ^21.2.3
+        version: 21.2.3
       '@release-it/conventional-changelog':
         specifier: ^12.0.0
         version: 12.0.0(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.4.0)(release-it@21.0.2(@types/node@22.19.11))
@@ -78,8 +78,8 @@ packages:
     engines: {node: '>=22.12.0'}
     hasBin: true
 
-  '@commitlint/config-conventional@21.2.2':
-    resolution: {integrity: sha512-NxA37SZviusFUEYOQZ5hNnZ1h7O/KiemPkxjOlpzKJNnWxThiwc6/SaZhaPa8fyLvfRBAywhQhJJk8XESHWlpQ==}
+  '@commitlint/config-conventional@21.2.3':
+    resolution: {integrity: sha512-EP2n5DN2GwRWNVrLX0Jx3mpQlW5PfFi9HnD9OJ8hN/H0xFqpCFyHeGDhg+0P8/21iMMcdkcQgbNqmVklebqYsQ==}
     engines: {node: '>=22.12.0'}
 
   '@commitlint/config-validator@21.2.0':
@@ -150,6 +150,10 @@ packages:
     resolution: {integrity: sha512-7zVFCDB2reMvJH5dmbKnOQPjZEvjdJTH8jc0U/PIPU1r3/+vf5pD1HlfitV2MWsWXrvu7u39iY1lyLUPOaN0Gw==}
     engines: {node: '>=22.12.0'}
 
+  '@commitlint/types@21.2.3':
+    resolution: {integrity: sha512-sGEA473TlCvhCGNoTBY9OXZVWdscIXdGt0dm8EpB+2MRfmt8LNh/X56P/T3nCtEB+eH5qGEa3odphSAoUxSfSQ==}
+    engines: {node: '>=22.12.0'}
+
   '@conventional-changelog/git-client@2.7.0':
     resolution: {integrity: sha512-j7A8/LBEQ+3rugMzPXoKYzyUPpw/0CBQCyvtTR7Lmu4olG4yRC/Tfkq79Mr3yuPs0SUitlO2HwGP3gitMJnRFw==}
     engines: {node: '>=18'}
@@ -190,8 +194,8 @@ packages:
     resolution: {integrity: sha512-TzlTVpKPjaqW6qOYjQcYUDuGsLCNsvFHVBXkYGTAnf5V37jCWrE5haKNXzz0WZUtVHjrpV76L1buANjwXMfT8w==}
     engines: {node: '>=22'}
 
-  '@conventional-changelog/template@1.3.0':
-    resolution: {integrity: sha512-GsCw/qu92GI0EX6s7fxUi/SG1lmFjG9XZivxxEDZXqztuQKCn5o5wKdz4v005zci0Md7EZzgAwmQLoIEDZoaow==}
+  '@conventional-changelog/template@1.4.0':
+    resolution: {integrity: sha512-aalGyl7dbB5PArRebDIX43ZvBlXrYm9uWzGJ26t+4SzJVPsOuvfILGGbw5X4yX7i50YEmJ8zvbiWnqH/AAnZqg==}
     engines: {node: '>=22'}
 
   '@csstools/css-calc@3.3.0':
@@ -1076,6 +1080,10 @@ packages:
     resolution: {integrity: sha512-DhBpBfXL4SS2uC0N922MMajKR3CdrTG0u2or1PNYgXMsrSzViJrbtvT0nCLlLGUI0plam/ZZCs7aAauHtW9thw==}
     engines: {node: '>=22'}
 
+  argue-cli@3.2.0:
+    resolution: {integrity: sha512-VipTB0gXgGIFO2Rg9yEVN5wLt2AurJcZqDbgmYSwPwsykhLrQhs240/bfceev4w68lI8JshoOJIk9uW7tFzROw==}
+    engines: {node: '>=22'}
+
   array-ify@1.0.0:
     resolution: {integrity: sha512-c5AMf34bKdvPhQ7tBGhqkgKNUzMr4WUs+WDtC2ZUGOUncbxKMTvqxYctiseW3+L4bA8ec+GcZ6/A/FW4m8ukng==}
 
@@ -1314,8 +1322,8 @@ packages:
     resolution: {integrity: sha512-n4Kr1HFMTf3iMbES0TMxKIcYtUUv4rKqyQQp2JwfOEfFCOfGT3Tq4mCyJ8S9/YPyWhydjfKrrvnyl+gCjA+mJQ==}
     engines: {node: '>=22'}
 
-  conventional-changelog-conventionalcommits@10.3.0:
-    resolution: {integrity: sha512-qag0zFD867Qq1DK0jAWicyWlEMS1FFC/BLVLISaoeI7Y6Em6aWchk7BCkhOTsecRpMsV6qX41XmlNnghiiTmSw==}
+  conventional-changelog-conventionalcommits@10.4.0:
+    resolution: {integrity: sha512-Rriac6ZrAlVm6cy9Bz4NSp+WMHpwNXoPIYex+HjCgduAVUSbnew29DQjQw0C4g9u3HtSYzGiGY+pdBXAZo+4aA==}
     engines: {node: '>=22'}
 
   conventional-changelog-conventionalcommits@9.3.1:
@@ -2886,7 +2894,7 @@ snapshots:
 
   '@commitlint/cli@21.2.2(@types/node@22.19.11)(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.4.0)(typescript@5.9.3)':
     dependencies:
-      '@commitlint/config-conventional': 21.2.2
+      '@commitlint/config-conventional': 21.2.3
       '@commitlint/format': 21.2.2
       '@commitlint/lint': 21.2.2
       '@commitlint/load': 21.2.2(@types/node@22.19.11)(typescript@5.9.3)
@@ -2900,31 +2908,31 @@ snapshots:
       - conventional-commits-parser
       - typescript
 
-  '@commitlint/config-conventional@21.2.2':
+  '@commitlint/config-conventional@21.2.3':
     dependencies:
-      '@commitlint/types': 21.2.0
-      conventional-changelog-conventionalcommits: 10.3.0
+      '@commitlint/types': 21.2.3
+      conventional-changelog-conventionalcommits: 10.4.0
 
   '@commitlint/config-validator@21.2.0':
     dependencies:
-      '@commitlint/types': 21.2.0
+      '@commitlint/types': 21.2.3
       ajv: 8.20.0
 
   '@commitlint/ensure@21.2.0':
     dependencies:
-      '@commitlint/types': 21.2.0
+      '@commitlint/types': 21.2.3
       es-toolkit: 1.50.0
 
   '@commitlint/execute-rule@21.0.1': {}
 
   '@commitlint/format@21.2.2':
     dependencies:
-      '@commitlint/types': 21.2.0
+      '@commitlint/types': 21.2.3
       picocolors: 1.1.1
 
   '@commitlint/is-ignored@21.2.2':
     dependencies:
-      '@commitlint/types': 21.2.0
+      '@commitlint/types': 21.2.3
       semver: 7.8.5
 
   '@commitlint/lint@21.2.2':
@@ -2932,14 +2940,14 @@ snapshots:
       '@commitlint/is-ignored': 21.2.2
       '@commitlint/parse': 21.2.2
       '@commitlint/rules': 21.2.2
-      '@commitlint/types': 21.2.0
+      '@commitlint/types': 21.2.3
 
   '@commitlint/load@21.2.0(@types/node@22.19.11)(typescript@5.9.3)':
     dependencies:
       '@commitlint/config-validator': 21.2.0
       '@commitlint/execute-rule': 21.0.1
       '@commitlint/resolve-extends': 21.2.0
-      '@commitlint/types': 21.2.0
+      '@commitlint/types': 21.2.3
       cosmiconfig: 9.0.2(typescript@5.9.3)
       cosmiconfig-typescript-loader: 6.3.0(@types/node@22.19.11)(cosmiconfig@9.0.2(typescript@5.9.3))(typescript@5.9.3)
       es-toolkit: 1.49.0
@@ -2955,7 +2963,7 @@ snapshots:
       '@commitlint/config-validator': 21.2.0
       '@commitlint/execute-rule': 21.0.1
       '@commitlint/resolve-extends': 21.2.2
-      '@commitlint/types': 21.2.0
+      '@commitlint/types': 21.2.3
       cosmiconfig: 9.0.2(typescript@5.9.3)
       cosmiconfig-typescript-loader: 6.3.0(@types/node@22.19.11)(cosmiconfig@9.0.2(typescript@5.9.3))(typescript@5.9.3)
       es-toolkit: 1.50.0
@@ -2969,14 +2977,14 @@ snapshots:
 
   '@commitlint/parse@21.2.2':
     dependencies:
-      '@commitlint/types': 21.2.0
+      '@commitlint/types': 21.2.3
       conventional-changelog-angular: 9.3.0
       conventional-commits-parser: 7.1.2
 
   '@commitlint/read@21.2.1(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.4.0)':
     dependencies:
       '@commitlint/top-level': 21.2.0
-      '@commitlint/types': 21.2.0
+      '@commitlint/types': 21.2.3
       '@conventional-changelog/git-client': 3.1.2(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.4.0)
       tinyexec: 1.3.1
     transitivePeerDependencies:
@@ -2986,7 +2994,7 @@ snapshots:
   '@commitlint/resolve-extends@21.2.0':
     dependencies:
       '@commitlint/config-validator': 21.2.0
-      '@commitlint/types': 21.2.0
+      '@commitlint/types': 21.2.3
       es-toolkit: 1.50.0
       global-directory: 5.0.0
       resolve-from: 5.0.0
@@ -2995,7 +3003,7 @@ snapshots:
   '@commitlint/resolve-extends@21.2.2':
     dependencies:
       '@commitlint/config-validator': 21.2.0
-      '@commitlint/types': 21.2.0
+      '@commitlint/types': 21.2.3
       es-toolkit: 1.50.0
       global-directory: 5.0.0
       resolve-from: 5.0.0
@@ -3005,7 +3013,7 @@ snapshots:
       '@commitlint/ensure': 21.2.0
       '@commitlint/message': 21.2.0
       '@commitlint/to-lines': 21.0.1
-      '@commitlint/types': 21.2.0
+      '@commitlint/types': 21.2.3
 
   '@commitlint/to-lines@21.0.1': {}
 
@@ -3016,6 +3024,11 @@ snapshots:
   '@commitlint/types@21.2.0':
     dependencies:
       conventional-commits-parser: 7.1.0
+      picocolors: 1.1.1
+
+  '@commitlint/types@21.2.3':
+    dependencies:
+      conventional-commits-parser: 7.1.2
       picocolors: 1.1.1
 
   '@conventional-changelog/git-client@2.7.0(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.4.0)':
@@ -3065,7 +3078,7 @@ snapshots:
 
   '@conventional-changelog/template@1.2.1': {}
 
-  '@conventional-changelog/template@1.3.0': {}
+  '@conventional-changelog/template@1.4.0': {}
 
   '@csstools/css-calc@3.3.0(@csstools/css-parser-algorithms@4.0.0(@csstools/css-tokenizer@4.0.0))(@csstools/css-tokenizer@4.0.0)':
     dependencies:
@@ -3658,6 +3671,8 @@ snapshots:
 
   argue-cli@3.1.0: {}
 
+  argue-cli@3.2.0: {}
+
   array-ify@1.0.0: {}
 
   ast-types@0.13.4:
@@ -3936,15 +3951,15 @@ snapshots:
 
   conventional-changelog-angular@9.3.0:
     dependencies:
-      '@conventional-changelog/template': 1.3.0
+      '@conventional-changelog/template': 1.4.0
 
   conventional-changelog-conventionalcommits@10.2.1:
     dependencies:
       '@conventional-changelog/template': 1.2.1
 
-  conventional-changelog-conventionalcommits@10.3.0:
+  conventional-changelog-conventionalcommits@10.4.0:
     dependencies:
-      '@conventional-changelog/template': 1.3.0
+      '@conventional-changelog/template': 1.4.0
 
   conventional-changelog-conventionalcommits@9.3.1:
     dependencies:
@@ -3956,7 +3971,7 @@ snapshots:
 
   conventional-changelog-writer@9.2.0:
     dependencies:
-      '@conventional-changelog/template': 1.3.0
+      '@conventional-changelog/template': 1.4.0
       '@simple-libs/stream-utils': 2.0.0
       argue-cli: 3.1.0
       conventional-commits-filter: 6.0.1
@@ -3994,7 +4009,7 @@ snapshots:
   conventional-commits-parser@7.1.2:
     dependencies:
       '@simple-libs/stream-utils': 2.0.0
-      argue-cli: 3.1.0
+      argue-cli: 3.2.0
 
   conventional-recommended-bump@11.2.0:
     dependencies:
