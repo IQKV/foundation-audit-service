@@ -6,5 +6,6 @@
             http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.33.xsd">
 
     <include file="db/changelog/system/20260522120000-initial-schema.xml"/>
+    <include file="db/changelog/system/20260522120001-create-shedlock-table.xml"/>
 
 </databaseChangeLog>
