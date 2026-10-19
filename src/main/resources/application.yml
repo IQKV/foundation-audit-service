@@ -14,6 +14,19 @@ spring:
     port: ${iqkv.rabbitmq.port}
     username: ${iqkv.rabbitmq.username}
     password: ${iqkv.rabbitmq.password}
+    listener:
+      simple:
+        # A rejected delivery must not be requeued immediately, otherwise a poison
+        # event loops forever: these queues have no x-message-ttl, so a hot loop
+        # never self-terminates. After the bounded retries below the message is
+        # dead-lettered to AUDIT_DLQ for inspection.
+        default-requeue-rejected: false
+        retry:
+          enabled: true
+          max-attempts: 3
+          initial-interval: 2s
+          multiplier: 2.0
+          max-interval: 30s
   liquibase:
     enabled: false
     change-log: classpath:db/changelog/system/db.changelog-system.xml
