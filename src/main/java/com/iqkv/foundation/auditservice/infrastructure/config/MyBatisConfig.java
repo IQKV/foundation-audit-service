@@ -19,8 +19,8 @@ package com.iqkv.foundation.auditservice.infrastructure.config;
 import java.util.UUID;
 import javax.sql.DataSource;
 
-import com.iqkv.foundation.auditservice.infrastructure.mybatis.UuidTypeHandler;
 import com.iqkv.foundation.auditservice.infrastructure.persistence.JsonbTypeHandler;
+import com.iqkv.foundation.mybatis.util.UuidTypeHandler;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.type.JdbcType;
