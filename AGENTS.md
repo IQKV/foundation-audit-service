@@ -8,68 +8,72 @@ This document provides comprehensive guidelines for repository management, devel
 
 ### Tactical DDD Project Layout
 
+Unlike the other services in this repo, `foundation-audit-service` really does use a **DDD-style
+onion layout** inside the `audit` bounded context. Keep that existing shape: `audit/domain` defines
+the core model and contracts, `audit/application` orchestrates use cases, and `audit/adapter/in/rest`
+exposes the HTTP surface. Cross-cutting technical concerns still live under `infrastructure`, with
+common helpers under `shared`.
+
 ```
-project-root/
-├── .github/                          # GitHub workflows and automation
-│   └── workflows/                    # CI/CD pipeline definitions
+foundation-audit-service/
+├── .github/workflows/                # GitHub Actions pipelines
+├── docker/                           # Local stack config
+├── docs/                             # API, architecture and deployment notes
 ├── src/
 │   ├── main/
-│   │   ├── java/                     # Java source code
-│   │   │   └── com/example/project/
-│   │   │       ├── shared/           # Shared kernel (cross-cutting concerns)
-│   │   │       │   ├── domain/       # Shared domain primitives
-│   │   │       │   ├── exception/    # Common exceptions
-│   │   │       │   └── util/         # Utility classes
-│   │   │       ├── infrastructure/   # Infrastructure layer
-│   │   │       │   ├── config/       # Spring configuration
-│   │   │       │   ├── security/     # Security implementation
-│   │   │       │   ├── persistence/  # JPA repositories, adapters
-│   │   │       │   └── messaging/    # Event publishers, message brokers
-│   │   │       ├── [bounded-context-1]/  # Example: user
-│   │   │       │   ├── domain/       # Domain layer (core business logic)
-│   │   │       │   │   ├── model/    # Aggregates, entities, value objects
-│   │   │       │   │   ├── service/  # Domain services
-│   │   │       │   │   └── event/    # Domain events
-│   │   │       │   ├── application/  # Application layer
-│   │   │       │   │   ├── service/  # Application services (use cases)
-│   │   │       │   │   ├── dto/      # Data transfer objects
-│   │   │       │   │   └── port/     # Ports (interfaces for adapters)
-│   │   │       │   └── adapter/      # Adapters (interface layer)
-│   │   │       │       ├── in/       # Inbound adapters
-│   │   │       │       │   └── rest/ # REST controllers
-│   │   │       │       └── out/      # Outbound adapters
-│   │   │       │           └── persistence/ # Repository implementations
-│   │   │       ├── [bounded-context-2]/  # Example: order
-│   │   │       │   ├── domain/
-│   │   │       │   ├── application/
-│   │   │       │   └── adapter/
-│   │   │       └── Application.java  # Spring Boot main class
+│   │   ├── java/com/iqkv/foundation/auditservice/
+│   │   │   ├── audit/                # Audit bounded context
+│   │   │   │   ├── domain/           # Core model and domain contracts
+│   │   │   │   │   ├── AuditRecord.java
+│   │   │   │   │   └── AuditStore.java
+│   │   │   │   ├── application/      # Use-case orchestration
+│   │   │   │   │   ├── AuditLogOrchestrator.java
+│   │   │   │   │   └── dto/          # Application DTOs
+│   │   │   │   └── adapter/in/rest/  # Inbound REST adapter
+│   │   │   │       └── AuditSearchRestResource.java
+│   │   │   ├── infrastructure/       # Technical implementation details
+│   │   │   │   ├── config/           # Spring, RabbitMQ, MyBatis, web, i18n config
+│   │   │   │   ├── security/         # Filters, JWT claim names, security config
+│   │   │   │   ├── persistence/      # MyBatis mapper + AuditStore implementation
+│   │   │   │   └── messaging/        # Broker consumers and listeners
+│   │   │   ├── tenancy/              # Tenant extraction at the edge
+│   │   │   ├── shared/               # Cross-context kernel
+│   │   │   │   ├── exception/        # Common exception types
+│   │   │   │   └── util/             # Shared utilities
+│   │   │   └── AuditServiceApplication.java         # Spring Boot main class
 │   │   └── resources/
-│   │       ├── application.yml       # Base configuration
-│   │       ├── application-local.yml # Local development profile
-│   │       └── db/changelog/         # Database migrations (if using Liquibase)
+│   │       ├── application.yml                      # Base configuration
+│   │       ├── application-{local,sit,uat,prd}.yml  # Per-environment profiles
+│   │       ├── mappers/                             # MyBatis XML mappers
+│   │       └── db/changelog/{system,tenant}/        # Liquibase changelogs
 │   └── test/
-│       └── java/                     # Unit, integration, and architecture tests
-│           └── com/example/project/
-│               ├── [bounded-context]/
-│               │   ├── domain/       # Domain model tests
-│               │   ├── application/  # Application service tests
-│               │   └── adapter/      # Adapter tests
-│               └── architecture/     # ArchUnit tests
+│       └── java/com/iqkv/foundation/auditservice/
+│           ├── audit/domain/         # Domain tests
+│           ├── infrastructure/persistence/ # MyBatis persistence tests
+│           ├── IntegrationTest.java
+│           ├── TechnicalStructureTest.java          # ArchUnit
+│           └── AuditServiceApplicationTests.java
 ├── .gitignore
 ├── pom.xml                           # Maven build configuration
 ├── README.md
 └── AGENTS.md                         # This file
 ```
 
-**Key DDD Concepts:**
+**Key structural concepts:**
 
-- **Bounded Context**: Logical boundary for a specific domain model (e.g., user, order, payment)
-- **Domain Layer**: Core business logic, entities, value objects, aggregates, domain services
-- **Application Layer**: Use cases, orchestration, DTOs, ports (interfaces)
-- **Adapter Layer**: Implementation of ports (REST controllers, repository implementations)
-- **Infrastructure**: Technical concerns (config, security, persistence framework)
-- **Shared Kernel**: Common code shared across bounded contexts
+- **Bounded context**: `audit` is the core functional boundary; changes should normally stay inside
+  that package unless they are truly cross-cutting.
+- **Domain layer**: `audit/domain` holds the core audit model and contracts. Keep framework concerns
+  out of this layer.
+- **Application layer**: `audit/application` orchestrates use cases and DTO transformations; it may
+  depend on `domain` but not on transport details.
+- **Adapter layer**: `audit/adapter/in/rest` exposes inbound REST endpoints. Adapter code may depend
+  on `application`, never the other way around.
+- **Infrastructure**: Technical implementations for MyBatis persistence, messaging, security and
+  Spring configuration.
+- **ArchUnit**: `TechnicalStructureTest` runs `onionArchitecture().withOptionalLayers(true)` rooted at
+  `AuditServiceApplication`, so package names in this document must stay aligned with the real
+  `audit/domain`, `audit/application` and `audit/adapter` layout.
 
 ## Minimal Change Discipline
 
@@ -225,11 +229,11 @@ Before making recommendations, agents should understand the project's technology
 - Spring Boot 4.x
 - Maven for build management
 
-**Data & Caching**
+**Data & Persistence**
 
-- Database: PostgreSQL/MySQL/H2 (check project configuration)
-- Spring Data JPA with Hibernate
-- Redis for caching (if configured)
+- Database: PostgreSQL (production), H2 (test scope — smoke context-load only)
+- **MyBatis** with XML mappers — there is no Spring Data JPA / Hibernate in this project
+- `mybatis.configuration.map-underscore-to-camel-case=true` is enabled globally
 
 **Security**
 
@@ -249,11 +253,11 @@ Before making recommendations, agents should understand the project's technology
 - SpringDoc OpenAPI 3
 - Swagger UI
 
-**Build & Deployment**
+- Mapper interfaces are backed by `src/main/resources/mappers/AuditMapper.xml`; `MyBatisAuditStore` is the `AuditStore` implementation used by the application layer`r`n- Liquibase changelogs live under `db/changelog/{system,tenant}/``r`n`r`n**Build & Deployment**
 
 - Maven 3.9.0+
-- Docker (if Dockerfile present)
-- Environment profiles: local, staging, production
+- Docker (Dockerfile present)
+- Environment profiles: `local`, `sit`, `uat`, `prd`
 
 ## 📋 Development Standards
 
@@ -497,27 +501,18 @@ public class UserController {
 
 ```java
 @ExtendWith(MockitoExtension.class)
-class UserServiceTest {
+class AuditLogOrchestratorTest {
 
   @Mock
-  private UserRepository userRepository;
+  private AuditStore auditStore;
 
-  @InjectMocks
-  private UserService userService;
+  private AuditLogOrchestrator auditLogOrchestrator;`r`n`r`n  @BeforeEach`r`n  void setUp() {`r`n    auditLogOrchestrator = new AuditLogOrchestrator(userRepository);`r`n  }
 
   @Test
   @DisplayName("Should create user successfully")
   void shouldCreateUser() {
     // Arrange
-    var command = new UserCreateCommand("john.doe", "john@example.com");
-    when(userRepository.save(any(User.class))).thenAnswer((i) -> i.getArgument(0));
-
-    // Act
-    var result = userService.createUser(command);
-
-    // Assert
-    assertThat(result.username()).isEqualTo("john.doe");
-    verify(userRepository).save(any(User.class));
+    var record = AuditRecord.builder().action("login").build();`r`n    when(auditStore.save(record)).thenReturn(record);`r`n`r`n    // Act`r`n    var result = auditLogOrchestrator.persist(record);`r`n`r`n    // Assert`r`n    assertThat(result.action()).isEqualTo("login");`r`n    verify(auditStore).save(record);
   }
 }
 ```
@@ -541,7 +536,7 @@ class UserServiceIntegrationTest {
   }
 
   @Autowired
-  private UserService userService;
+  private AuditLogOrchestrator auditLogOrchestrator;
 
   @Test
   void shouldCreateAndRetrieveUser() {
@@ -553,20 +548,7 @@ class UserServiceIntegrationTest {
 **Architecture Tests with ArchUnit:**
 
 ```java
-@AnalyzeClasses(packages = "com.example.project")
-class ArchitectureTest {
-
-  @ArchTest
-  static final ArchRule servicesOnlyAccessedByControllersOrServices = classes()
-    .that()
-    .resideInAPackage("..service..")
-    .should()
-    .onlyBeAccessed()
-    .byAnyPackage("..controller..", "..service..", "..config..");
-
-  @ArchTest
-  static final ArchRule repositoriesShouldBeInterfaces = classes().that().resideInAPackage("..repository..").should().beInterfaces();
-}
+@AnalyzeClasses(packagesOf = AuditServiceApplication.class, importOptions = DoNotIncludeTests.class)`r`nclass TechnicalStructureTest {`r`n`r`n  @ArchTest`r`n  static final ArchRule respectsTechnicalArchitectureLayers = onionArchitecture()`r`n      .withOptionalLayers(true)`r`n      .ignoreDependency(belongToAnyOf(AuditServiceApplication.class), alwaysTrue());`r`n}
 ```
 
 ### Maven Command Best Practices for AI Agents
@@ -833,7 +815,7 @@ A task is evaluated as done only when all of the following hold:
 | Domain / application / service logic                            | Unit tests (JUnit 5 + Mockito, AAA); a new non-trivial branch, loop or parser needs a test |
 | REST controller, Spring Security, `@PreAuthorize`, tenant guard | Security test, then full `mvn clean verify`                                                |
 | Liquibase changelog                                             | Full `mvn clean verify` — the Spring context and schema must load cleanly                  |
-| Package/layer move, new bounded context                         | ArchUnit `*ArchitectureTest`, then full `mvn clean verify`                                 |
+| Package/layer move, bounded-context restructure                 | ArchUnit `*ArchitectureTest`, then full `mvn clean verify`                                 |
 | Dependency or build config                                      | Full `mvn clean verify`                                                                    |
 | Docs or `AGENTS.md` only                                        | No code gate — state that none applies                                                     |
 
